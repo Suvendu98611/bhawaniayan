@@ -1,9 +1,12 @@
 {
   "build": {
-    "builder": "NIXPACKS",
+    "builder": "nixpacks",
     "root": "prime-estates-server",
-    "buildCommand": "npm install",
+    "buildCommand": "npm install"
+  },
+  "start": {
     "startCommand": "node server.js"
   }
 }
+
 
