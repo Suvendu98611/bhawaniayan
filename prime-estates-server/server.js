@@ -7,12 +7,17 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Allow frontend from Netlify
-app.use(cors({
+// ✅ Correct CORS setup for Netlify frontend
+const corsOptions = {
   origin: 'https://bhawaniayans.netlify.app',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-}));
+  allowedHeaders: ['Content-Type'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // ⚠️ MUST be before routes
 
 app.use(express.json());
 
@@ -46,4 +51,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
