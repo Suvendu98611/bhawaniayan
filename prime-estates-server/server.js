@@ -7,21 +7,11 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Explicitly allow Netlify frontend
-const allowedOrigins = [
-  'https://bhawaniayans.netlify.app',
-  'http://localhost:3000' // for local testing
-];
-
+// ✅ Allow frontend from Netlify
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like curl/postman) or valid origins
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
+  origin: 'https://bhawaniayans.netlify.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
@@ -42,8 +32,8 @@ app.post('/send-whatsapp', async (req, res) => {
   try {
     await client.messages.create({
       body: whatsappMessage,
-      from: 'whatsapp:+14155238886', // Twilio sandbox number
-      to: 'whatsapp:+919937113700'   // Your verified WhatsApp number
+      from: 'whatsapp:+14155238886',
+      to: 'whatsapp:+919937113700'
     });
     res.status(200).json({ success: true, message: 'WhatsApp message sent successfully' });
   } catch (error) {
@@ -56,3 +46,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
