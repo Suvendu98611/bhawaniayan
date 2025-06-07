@@ -9,12 +9,14 @@ const app = express();
 // ✅ Safe CORS setup for Netlify frontend
 const corsOptions = {
   origin: 'https://bhawaniayans.netlify.app',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   credentials: true
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // <-- This line handles preflight OPTIONS requests
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
